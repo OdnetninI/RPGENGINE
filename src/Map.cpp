@@ -90,6 +90,7 @@ void Map::setDimensions (uint16_t width, uint16_t height) {
 */
 void Map::update (sf::Time deltaTime, int16_t startTileX, int16_t startTileY, uint16_t width, uint16_t hight) {
   if (this->m_visibleMap != nullptr) {
+    this->m_render = true;
     this->m_renderWidth = width;
     this->m_renderHeight = hight;
     for (uint8_t i = 0; i < this->m_layers; i++) {
@@ -109,10 +110,11 @@ void Map::update (sf::Time deltaTime, int16_t startTileX, int16_t startTileY, ui
 }
 
 void Map::render (Game* game) {
-  if (this->m_visibleMap != nullptr) {
+  if (this->m_render == true && this->m_visibleMap != nullptr) {
     for (uint8_t i = 0; i < this->m_layers; i++) {
         this->m_visibleMap[i].render(game, this->m_renderWidth, this->m_renderHeight);
     }
+    this->m_render = false;
   }
 }
 

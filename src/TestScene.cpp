@@ -187,7 +187,7 @@ void TestScene::Update() {
       //this->m_game->getSceneMng().markToRemove(this);
       //this->m_game->getSceneMng().markToAdd(new TestScene(this->m_game));
     }
-    if (event.type == sf::Event::KeyPressed) {
+    /*if (event.type == sf::Event::KeyPressed) {
       if (event.key.code == sf::Keyboard::Right) {
         spriteIndex++;
         x+=4;
@@ -208,8 +208,14 @@ void TestScene::Update() {
         y-=4;
         //std::cout << "Index: " << spriteIndex << std::endl;
       }
-    }
+    }*/
   }
+  int vel = 4;
+  x+=16;
+  if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) x-=vel;
+  if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) x+=vel;
+  if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) y-=vel;
+  if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) y+=vel;
 
   //this->m_sprite.setIndex(spriteIndex);
   //this->m_world.getMap()->setScroll(x,y);

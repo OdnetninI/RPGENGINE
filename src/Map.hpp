@@ -20,6 +20,8 @@ class Map {
     uint16_t                    m_renderWidth;
     uint16_t                    m_renderHeight;
 
+    bool                        m_render;
+
     void          Construct           ();
 
   public:

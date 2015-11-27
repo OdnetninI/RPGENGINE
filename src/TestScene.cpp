@@ -211,7 +211,7 @@ void TestScene::Update() {
     }*/
   }
   int vel = 4;
-  x+=16;
+  //x+=16;
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) x-=vel;
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) x+=vel;
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) y-=vel;

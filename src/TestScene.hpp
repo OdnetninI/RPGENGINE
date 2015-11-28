@@ -16,12 +16,6 @@ class TestScene : public AbstractScene {
     int                 m_num;
     AbstractSprite      m_sprite;
     AbstractSprite      m_test;
-    AbstractVisibleMap  m_map;
-    AbstractVisibleMap  m_mapBack;
-    Tileset             m_tileset;
-  //  Map                 m_palletTown;
-  //  Map                 m_palletTown2;
-  //  Map*                m_mapa;
     World               m_world;
 
   public:

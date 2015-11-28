@@ -181,30 +181,6 @@ void World::update (sf::Time deltaTime) {
   if (this->m_actualSouthMap != nullptr && (this->y / tileH) > scrTy / 2)
     this->mapUpdate(this->m_actualSouthMap, deltaTime, x, y + higth * tileH, startTileX, 0, with + 1, scrTy - higth + 1);
 
-  // this->m_actualMap->setScroll(-this->x % tileW, -this->y % tileH);
-  // this->m_actualMap->update(deltaTime, startTileX, startTileY, (with)+1, (higth)+1);
-
-  /*if (this->m_actualEastMap != nullptr) {
-    if (with <= (WIN_X / tileW)) {
-      this->m_actualEastMap->setScroll((-(this->x % tileW)) + with*tileW, -(this->y % tileH));
-      this->m_actualEastMap->update(deltaTime, 0, startTileY, (WIN_X / tileW) - with + 1, higth+1);
-    }
-  }*/
-
-  /* if (this->m_actualWestMap != nullptr) {
-    if ( && (this->x / tileW) < ((WIN_X / 2) / tileW)) {
-      this->m_actualWestMap->setScroll((-(this->x % tileW + tileW)), -(this->y % tileH));
-      this->m_actualWestMap->update(deltaTime, this->m_actualWestMap->getWidth() - leftaling - 1, startTileY, leftaling + 1, higth+1);
-    }
-  }*/
-/*
-  if (this->m_actualNorthMap != nullptr) {
-    if ((this->y / tileH) < ((WIN_Y / 2) / tileH)) {
-      this->m_actualEastMap->setScroll(-this->x % tileW, -(this->y % tileH + tileH));
-      this->m_actualEastMap->update(deltaTime, startTileX, this->m_actualNorthMap->getHight() - upaling - 1, with + 1, upaling + 1);
-    }
-  }
-*/
   // if (this->m_actualSouthMap != nullptr) {
   //   if ((this->y / tileH) > ((WIN_Y / 2) / tileH)) {
   //     this->m_actualSouthMap->setScroll(-this->x % tileW, -(this->y % tileH) + higth * tileH);

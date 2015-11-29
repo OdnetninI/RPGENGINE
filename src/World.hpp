@@ -34,6 +34,7 @@ class World {
 
       void        load              (std::string filename);
       void        lockSprite        (AbstractSprite& sprite);
+      Map*        getMapByID        (uint16_t id);
 
       void        setActualMap      (uint16_t map);
       Map*        getMap            ();

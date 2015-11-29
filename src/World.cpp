@@ -83,60 +83,39 @@ int16_t World::getCameraY () {
   return this->y;
 }
 
+Map* World::getMapByID (uint16_t id) {
+  auto finder = this->m_maps.find(id);
+  if (finder != this->m_maps.end()) return finder->second;
+  return nullptr;
+}
+
 void World::setActualMap (uint16_t map) {
   this->m_actualMap = this->m_maps[map];
-  this->m_actualNorthMap = this->m_maps[this->m_actualMap->getNorthMap()];
-  this->m_actualSouthMap = this->m_maps[this->m_actualMap->getSouthMap()];
-  this->m_actualEastMap = this->m_maps[this->m_actualMap->getEastMap()];
-  this->m_actualWestMap = this->m_maps[this->m_actualMap->getWestMap()];
+  this->m_actualNorthMap = this->getMapByID(this->m_actualMap->getNorthMap());
+  this->m_actualSouthMap = this->getMapByID(this->m_actualMap->getSouthMap());
+  this->m_actualEastMap = this->getMapByID(this->m_actualMap->getEastMap());
+  this->m_actualWestMap = this->getMapByID(this->m_actualMap->getWestMap());
   this->m_actualNorthWestMap = nullptr;
   this->m_actualSouthWestMap = nullptr;
   this->m_actualNorthEastMap = nullptr;
   this->m_actualSouthEastMap = nullptr;
 
   if (this->m_actualNorthMap != nullptr) {
-    this->m_actualNorthWestMap = this->m_maps[this->m_actualNorthMap->getWestMap()];
-    this->m_actualNorthEastMap = this->m_maps[this->m_actualNorthMap->getEastMap()];
+    this->m_actualNorthWestMap = this->getMapByID(this->m_actualNorthMap->getWestMap());
+    this->m_actualNorthEastMap = this->getMapByID(this->m_actualNorthMap->getEastMap());
   }
   if (this->m_actualSouthMap != nullptr) {
-    this->m_actualSouthWestMap = this->m_maps[this->m_actualSouthMap->getWestMap()];
-    this->m_actualSouthEastMap = this->m_maps[this->m_actualSouthMap->getEastMap()];
+    this->m_actualSouthWestMap = this->getMapByID(this->m_actualSouthMap->getWestMap());
+    this->m_actualSouthEastMap = this->getMapByID(this->m_actualSouthMap->getEastMap());
   }
   if (this->m_actualEastMap != nullptr && ((uint64_t)this->m_actualNorthEastMap & (uint64_t)this->m_actualSouthEastMap ) == 0) {
-    this->m_actualNorthEastMap = this->m_maps[this->m_actualEastMap->getNorthMap()];
-    this->m_actualSouthEastMap = this->m_maps[this->m_actualEastMap->getSouthMap()];
+    this->m_actualNorthEastMap = this->getMapByID(this->m_actualEastMap->getNorthMap());
+    this->m_actualSouthEastMap = this->getMapByID(this->m_actualEastMap->getSouthMap());
   }
   if (this->m_actualWestMap != nullptr && ((uint64_t)this->m_actualNorthWestMap & (uint64_t)this->m_actualSouthWestMap ) == 0) {
-    this->m_actualNorthWestMap = this->m_maps[this->m_actualWestMap->getNorthMap()];
-    this->m_actualSouthWestMap = this->m_maps[this->m_actualWestMap->getSouthMap()];
+    this->m_actualNorthWestMap = this->getMapByID(this->m_actualWestMap->getNorthMap());
+    this->m_actualSouthWestMap = this->getMapByID(this->m_actualWestMap->getSouthMap());
   }
-/*
-  if (this->m_actualNorthMap != nullptr) {
-    this->m_actualNorthWestMap = this->m_maps[this->m_actualNorthMap->getWestMap()];
-    this->m_actualNorthEastMap = this->m_maps[this->m_actualNorthMap->getEastMap()];
-  }
-  else {
-    if (this->m_actualEastMap != nullptr) {
-      this->m_actualNorthEastMap = this->m_maps[this->m_actualEastMap->getNorthMap()];
-    }
-    if (this->m_actualWestMap != nullptr) {
-      this->m_actualNorthWestMap = this->m_maps[this->m_actualWestMap->getNorthMap()];
-    }
-  }
-
-  if (this->m_actualSouthMap != nullptr) {
-    this->m_actualSouthWestMap = this->m_maps[this->m_actualSouthMap->getWestMap()];
-    this->m_actualSouthEastMap = this->m_maps[this->m_actualSouthMap->getEastMap()];
-  }
-  else {
-    if (this->m_actualEastMap != nullptr) {
-      this->m_actualSouthEastMap = this->m_maps[this->m_actualEastMap->getSouthMap()];
-    }
-    if (this->m_actualWestMap != nullptr) {
-      this->m_actualSouthWestMap = this->m_maps[this->m_actualWestMap->getSouthMap()];
-    }
-  }*/
-
 }
 
 Map* World::getMap() {
@@ -181,13 +160,6 @@ void World::update (sf::Time deltaTime) {
   if (this->m_actualSouthMap != nullptr && (this->y / tileH) > scrTy / 2)
     this->mapUpdate(this->m_actualSouthMap, deltaTime, x, y + higth * tileH, startTileX, 0, with + 1, scrTy - higth + 1);
 
-  // if (this->m_actualSouthMap != nullptr) {
-  //   if ((this->y / tileH) > ((WIN_Y / 2) / tileH)) {
-  //     this->m_actualSouthMap->setScroll(-this->x % tileW, -(this->y % tileH) + higth * tileH);
-  //     this->m_actualSouthMap->update(deltaTime, startTileX, 0, with + 1, (WIN_Y / tileH) - higth + 1);
-  //   }
-  // }
-  //
   // if (this->m_actualNorthWestMap != nullptr) {
   //   if (((this->x / tileW) < ((WIN_X / 2) / tileW)) && ((this->y / tileH) < ((WIN_Y / 2) / tileH))) {
   //     uint16_t leftaling = ((WIN_X / 2) / tileW) - (this->x / tileW);

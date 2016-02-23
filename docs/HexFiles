@@ -111,3 +111,23 @@ MapData: {
     uint16_t[]  tiles // layer 255
   }
 }
+
+ChunkData: {
+  comment:    "Chunk Data"
+  extension   ".chunk"
+  hexType:    "BIG ENDIAN"
+
+  Data: {
+    int16_t   chunkx;
+    int16_t   chunky;
+
+    uint16_t  tile;
+    uint16_t  downTile;
+    uint16_t  upTile;
+    uint8_t   collision;
+    uint8_t   tileset;
+            .
+            .
+            .
+  }
+}

@@ -14,7 +14,6 @@ class TestScene : public AbstractScene {
   private:
     Game*               m_game;
     int                 m_num;
-    AbstractSprite      m_sprite;
     AbstractSprite      m_test;
     World               m_world;
 

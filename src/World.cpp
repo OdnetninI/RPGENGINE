@@ -141,16 +141,17 @@ void World::update (sf::Time deltaTime) {
   int16_t startTileY = (this->y / tileH) - scrTy / 2;
   uint16_t with = ((this->m_actualMap->getWidth() - startTileX) >= scrTx) ? scrTx : (this->m_actualMap->getWidth() - startTileX);
   uint16_t higth = ((this->m_actualMap->getHight() - startTileY) >= scrTy) ? scrTy : (this->m_actualMap->getHight() - startTileY);
-  uint16_t leftaling = (scrTx / 2) - (this->x / tileW);
+  uint16_t leftaling = ((scrTx / 2) - (this->x / tileW) < 0) ? 0 : (scrTx / 2) - (this->x / tileW);
   uint16_t upaling = (scrTy / 2) - (this->y / tileH);
   int16_t x = -(this->x % tileW);
   int16_t y = -(this->y % tileH);
 
-  bool topLimit = (this->y / tileH) - scrTy/2 <= 0;
+  //FIXME: right and down necesary load one tile before
+  bool topLimit = (this->y / tileH) - scrTy/2 < 0;
   bool downLimit = (this->y / tileH) + scrTy/2 >= this->m_actualMap->getHight();
   bool rightLimit = (this->x / tileW) >= with;
-  bool leftLimit = (this->x / tileW) - scrTx/2 <= 0;
-
+  bool leftLimit = (this->x / tileW) - scrTx/2 < 0;
+/*
   std::cout << "Center ID: " << this->m_actualMap->getID()-1 << std::endl;
   std::cout << "W ID: " << this->m_actualWestMap->getID()-1 << std::endl;
   std::cout << "N ID: " << this->m_actualNorthMap->getID()-1 << std::endl;
@@ -160,64 +161,60 @@ void World::update (sf::Time deltaTime) {
   std::cout << "NE ID: " << this->m_actualNorthEastMap->getID()-1 << std::endl;
   std::cout << "SW ID: " << this->m_actualSouthWestMap->getID()-1 << std::endl;
   std::cout << "SE ID: " << this->m_actualSouthEastMap->getID()-1 << std::endl;
-
+*/
   this->mapUpdate(this->m_actualMap, deltaTime, x, y, startTileX, startTileY, (with)+1, (higth)+1);
 
   //std::cout << "Hight " << this->m_actualMap->getHight() << " (this->y / tileH) " << (this->y / tileH) << std::endl;
 
   if (this->m_actualEastMap != nullptr && rightLimit) {
-    std::cout << "Update EAST" << std::endl;
+    //std::cout << "Update EAST" << std::endl;
     this->mapUpdate(this->m_actualEastMap, deltaTime, x + with*tileW, y, 0, startTileY, scrTx - with + 1, higth+1);
   }
-
+  //std::cout << "scrollx " << x - tileW +1 << " scrolly " << y << " startx " << this->m_actualWestMap->getWidth() - leftaling -1 << " starty " << startTileY << " width " << leftaling + 1 << " higth " << higth + 1 << std::endl;
   if (this->m_actualWestMap != nullptr && leftLimit) {
-    std::cout << "Update WEST" << std::endl;
-    this->mapUpdate(this->m_actualWestMap, deltaTime, x - tileW, y,this->m_actualWestMap->getWidth() - leftaling - 1, startTileY, leftaling + 1, higth+1);
+    //std::cout << "Update WEST" << std::endl;
+    this->mapUpdate(this->m_actualWestMap, deltaTime, x - tileW, y,this->m_actualWestMap->getWidth() - leftaling -1, startTileY, leftaling +1, higth+1);
   }
 
   if (this->m_actualNorthMap != nullptr && topLimit) {
-    std::cout << "Update NORTH" << std::endl;
-    this->mapUpdate(this->m_actualNorthMap, deltaTime, x, y - tileH, startTileX, this->m_actualNorthMap->getHight() - upaling - 1, with + 1, upaling + 1);
+    //std::cout << "Update NORTH" << std::endl;
+    this->mapUpdate(this->m_actualNorthMap, deltaTime, x, y - tileH, startTileX, this->m_actualNorthMap->getHight() - upaling -1, with + 1, upaling +1);
   }
 
   if (this->m_actualSouthMap != nullptr && downLimit) {
-    std::cout << "Update SOUTH" << std::endl;
+    //std::cout << "Update SOUTH" << std::endl;
     this->mapUpdate(this->m_actualSouthMap, deltaTime, x, y + higth * tileH, startTileX, 0, with + 1, scrTy - higth + 1);
   }
 
   if (this->m_actualNorthWestMap != nullptr && topLimit && leftLimit) {
-    std::cout << "Update NWEST" << std::endl;
+    //std::cout << "Update NWEST" << std::endl;
     uint16_t leftaling = ((WIN_X / 2) / tileW) - (this->x / tileW);
     uint16_t upaling = ((WIN_Y / 2) / tileH) - (this->y / tileH);
     this->m_actualNorthWestMap->setScroll(x - tileW, y - tileH);
-    this->m_actualNorthWestMap->update(deltaTime, this->m_actualWestMap->getWidth() - leftaling - 1, this->m_actualNorthMap->getHight() - upaling - 1, leftaling + 1, upaling + 1);
+    this->m_actualNorthWestMap->update(deltaTime, this->m_actualWestMap->getWidth() - leftaling -1, this->m_actualNorthMap->getHight() - upaling -1, leftaling +1, upaling +1);
   }
 
   if (this->m_actualNorthEastMap != nullptr && topLimit && rightLimit) {
-    std::cout << "Update NEST" << std::endl;
-    uint16_t leftaling = ((WIN_X / 2) / tileW) + (this->x / tileW);
+    //std::cout << "Update NEST" << std::endl;
     uint16_t upaling = ((WIN_Y / 2) / tileH) - (this->y / tileH);
     this->m_actualNorthEastMap->setScroll(x + with*tileW, y - tileH);
-    this->m_actualNorthEastMap->update(deltaTime, 0, this->m_actualNorthMap->getHight() - upaling - 1, leftaling + 1, upaling + 1);
+    this->m_actualNorthEastMap->update(deltaTime, 0, this->m_actualNorthMap->getHight() - upaling -1, scrTx - with + 1 , upaling +1);
   }
 
   if (this->m_actualSouthWestMap != nullptr && downLimit && leftLimit) {
-    std::cout << "Update SWEST" << std::endl;
+    //std::cout << "Update SWEST" << std::endl;
     uint16_t leftaling = ((WIN_X / 2) / tileW) - (this->x / tileW);
-    uint16_t upaling = ((WIN_Y / 2) / tileH) + (this->y / tileH);
     this->m_actualSouthWestMap->setScroll(x - tileW, y + higth * tileH);
-    this->m_actualSouthWestMap->update(deltaTime, this->m_actualWestMap->getWidth() - leftaling - 1, 0, leftaling + 1, upaling + 1);
+    this->m_actualSouthWestMap->update(deltaTime, this->m_actualWestMap->getWidth() - leftaling -1, 0, leftaling +1, scrTy - higth + 1);
   }
 
   if (this->m_actualSouthEastMap != nullptr && downLimit && rightLimit) {
-    std::cout << "Update SEST" << std::endl;
-    uint16_t leftaling = ((WIN_X / 2) / tileW) + (this->x / tileW);
-    uint16_t upaling = ((WIN_Y / 2) / tileH) + (this->y / tileH);
+    //std::cout << "Update SEST" << std::endl;
     this->m_actualSouthEastMap->setScroll(x + with*tileW, y + higth * tileH);
-    this->m_actualSouthEastMap->update(deltaTime, 0, 0, leftaling + 1, upaling + 1);
+    this->m_actualSouthEastMap->update(deltaTime, 0, 0, scrTx - with + 1, scrTy - higth + 1);
   }
 
-  std::cout << "------" << std::endl;
+  //std::cout << "------" << std::endl;
 
   if (this->m_actualEastMap != nullptr && (this->x / tileW) > this->m_actualMap->getWidth() - 1) {
     this->x = 0;

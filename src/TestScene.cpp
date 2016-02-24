@@ -1,5 +1,6 @@
 #include <iostream>
 #include "TestScene.hpp"
+#include "Chunk.hpp"
 
 int numscenes = 0;
 int spriteIndex = 0;
@@ -26,6 +27,12 @@ TestScene::TestScene(Game* game) {
 
     this->m_world.load("Data/World.wd");
     this->m_world.setActualMap(1);
+    
+    uint64_t ch = 3546678337482594656;
+    uint64_t cf = CHUNK_TILE(12600,21800,9785,25,96);
+    std::cout << "Original: " << ch << " new " << cf << std::endl;
+    std::cout << "Info " << CHUNK_TILE_DOWN(cf) << " " << CHUNK_TILE_MIDLE(cf) << " " << CHUNK_TILE_UP(cf) << " " << INT_16_TO_64(CHUNK_TILE_COLLISION(cf)) << " " << INT_16_TO_64(CHUNK_TILE_TILESET(cf)) << std::endl;
+
 }
 
 void TestScene::Update() {
@@ -47,7 +54,6 @@ void TestScene::Update() {
 
   if ( (x == ( (x >> 6) << 6 )) && (y == ( (y >> 6) << 6 )))
     dir = DIR_NONE;
-
   //std::cout << "X: " << x << " Y: " << y << std::endl << "Look: " << look << " Dir: " << dir << std::endl;
   //x+=16;
   if (dir == DIR_NONE && look == DIR_LEFT && sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) dir=DIR_LEFT;

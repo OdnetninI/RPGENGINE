@@ -15,13 +15,14 @@
 #define CHUNK_TILE(x,y,z,a,b)   (uint64_t)(INT_16_TO_64(x) << 48 | INT_16_TO_64(y) << 32 | INT_16_TO_64(z) << 16 | INT_8_TO_64(a) << 8 | INT_8_TO_64(b))
 
 class Chunk {
-  public:
+  private:
     int16_t m_x, m_y;
     uint64_t m_tiles[CHUNK_SIZE][CHUNK_SIZE];
 
-  private:
+  public:
     Chunk (int16_t x, int16_t y);
     bool setTile (uint16_t x, uint16_t y, uint16_t down, uint16_t middle, uint16_t up, uint8_t collision, uint8_t tileset);
+    void setNewPosition (int16_t x, int16_t y);
     uint16_t getTile (uint16_t x, uint16_t y, uint8_t layer);
     uint8_t getCollision (uint16_t x, uint16_t y);
     uint8_t getTileset (uint16_t x, uint16_t y);

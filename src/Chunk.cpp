@@ -12,6 +12,11 @@ bool Chunk::setTile (uint16_t x, uint16_t y, uint16_t down, uint16_t middle, uin
   return true;
 }
 
+void Chunk::setNewPosition (int16_t x, int16_t y) {
+  this->m_x = x;
+  this->m_y = y;
+}
+
 uint16_t Chunk::getTile (uint16_t x, uint16_t y, uint8_t layer) {
   if (x >= CHUNK_SIZE || y >= CHUNK_SIZE) return 0;
   return (layer == 0) ? CHUNK_TILE_DOWN(this->m_tiles[x][y]) : (layer == 1) ? CHUNK_TILE_MIDLE(this->m_tiles[x][y]) : (layer == 2) ? CHUNK_TILE_UP(this->m_tiles[x][y]) : 0;
